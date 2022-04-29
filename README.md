@@ -1,0 +1,53 @@
+# KAIROS
+
+KAIROS: Incremental Verification in High-Level Synthesis through Latency-Insensitive Design
+
+
+## Dependency
+
+```
+sudo apt install berkeley-abc
+sudo apt install yosys
+```
+
+## Create wrapper
+
+```
+python3 ./kairos.py ./gcd_fast_m.v ./gcd_slow_m.v ./gcd_dest_m.v
+```
+## Change bitvector length
+
+Open a text editor, replace [5:0] to (e.g.) [2:0] in everywhere.
+
+## Synthesis
+
+```
+yosys
+```
+```
+read_verilog ./gcd_dest_m.v
+synth -top gcd_dest_m
+write_verilog gcd.v
+```
+
+```
+read_verilog ./gcd_dest_m.v
+synth -top gcd_dest_m
+flatten
+aigmap
+write_aiger gcd.aig
+```
+
+## Model checking
+
+You can try other model checkers, for example, IC3_ref.
+
+The aig file is already a mitered circuit. A model checker will find a counterexample whenever the output signal (nequiv) is 1. If it can never be a 1, the model is safe.
+```
+berkeley-abc
+```
+```
+read_aiger ./gcd.aig
+pdr
+```
+
