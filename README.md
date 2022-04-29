@@ -19,6 +19,18 @@ python3 ./kairos.py ./gcd_fast_m.v ./gcd_slow_m.v ./gcd_dest_m.v
 
 Open a text editor, replace [5:0] to (e.g.) [2:0] in everywhere.
 
+## Simulation
+
+Open eda playground
+
+```
+https://www.edaplayground.com/x/kzxN
+```
+
+Then click run.
+
+If you want to modify the testbench, please clone to another playground then modify it.
+
 ## Synthesis
 
 ```
