@@ -78,7 +78,7 @@ if __name__ == '__main__':
     for k, v in io.ports.items():
         if v.type == 'input':
             inputs.append(v.name)
-        elif v.type.startswith('output'):
+        elif v.type == 'output':
             outputs.append(v.name)
             
     print(io.name)
