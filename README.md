@@ -63,3 +63,17 @@ read_aiger ./gcd.aig
 pdr
 ```
 
+```
+nuXmv
+```
+```
+./nuxmv -int
+```
+```
+read_aiger_model -i ./gcd.aig
+flatten_hierarchy
+encode_variables
+build_boolean_model
+check_invar_ic3
+```
+
