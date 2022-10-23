@@ -45,6 +45,7 @@ write_verilog gcd.v
 ```
 read_verilog ./gcd_dest_m.v
 synth -top gcd_dest_m
+zinit -all
 flatten
 aigmap
 write_aiger gcd.aig
