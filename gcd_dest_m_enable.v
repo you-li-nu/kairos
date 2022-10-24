@@ -1,5 +1,5 @@
-module gcd_fast_m (clk,enable,start,Ain,Bin,Out,valid);
-    input clk,enable,start;
+module gcd_fast_m (clk,enable,nstart,Ain,Bin,Out,valid);
+    input clk,enable,nstart;
     input [5:0] Ain,Bin;
     output reg [5:0] Out;
     output reg valid;
@@ -8,11 +8,11 @@ module gcd_fast_m (clk,enable,start,Ain,Bin,Out,valid);
 
     always @ (posedge clk)
         begin
-            if (start)
+            if (~nstart)
                 begin
                     A <= Ain; B <= Bin; valid <= 0;
                 end
-          else if (~enable)
+            else if (~enable)
                 begin
                     A <= A; B <= B; valid <= valid;
                 end
@@ -32,8 +32,8 @@ module gcd_fast_m (clk,enable,start,Ain,Bin,Out,valid);
         end
 endmodule
 
-module gcd_slow_m (clk,enable,start,Ain,Bin,Out,valid);
-    input clk,enable,start;
+module gcd_slow_m (clk,enable,nstart,Ain,Bin,Out,valid);
+    input clk,enable,nstart;
     input [5:0] Ain,Bin;
     output reg [5:0] Out;
     output reg valid;
@@ -42,7 +42,7 @@ module gcd_slow_m (clk,enable,start,Ain,Bin,Out,valid);
 
     always @ (posedge clk)
         begin
-            if (start)
+            if (~nstart)
                 begin
                     A <= Ain; B <= Bin; valid <= 0;
                 end
@@ -69,7 +69,7 @@ endmodule
 
 module gcd_dest_m (clk,Ain,Bin,nequiv);
 	input clk;
-	reg start;
+	reg nstart;
 	input [5:0] Ain;
 	input [5:0] Bin;
 	wire [5:0] Out_1;
@@ -81,12 +81,12 @@ module gcd_dest_m (clk,Ain,Bin,nequiv);
 	output nequiv;
   
   	initial begin
-      start = 1;
+      nstart = 0;
     end
   
   	always @ (posedge clk)
         begin
-          start <= 0;
+          nstart <= 1;
         end
 
 	assign en_1 = ~(valid_1 & ~ valid_2);
@@ -98,7 +98,7 @@ module gcd_dest_m (clk,Ain,Bin,nequiv);
 	gcd_fast_m fast_m (
 		.clk(clk),
       	.enable(en_1),
-		.start(start),
+		.nstart(nstart),
 		.Ain(Ain),
 		.Bin(Bin),
 		.Out(Out_1),
@@ -108,7 +108,7 @@ module gcd_dest_m (clk,Ain,Bin,nequiv);
 	gcd_slow_m slow_m (
 		.clk(clk),
       	.enable(en_2),
-		.start(start),
+		.nstart(nstart),
 		.Ain(Ain),
 		.Bin(Bin),
 		.Out(Out_2),
